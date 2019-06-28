@@ -4,7 +4,7 @@ android {
     compileSdkVersion 26
 
     defaultConfig {
-        applicationId "widgetgo.com.widgetgo"
+        applicationId "jokes.com.widget"
         minSdkVersion 14
         targetSdkVersion 26
         versionCode 2
