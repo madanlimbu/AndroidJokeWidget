@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 28
 
     defaultConfig {
         applicationId "jokes.com.widget"
-        minSdkVersion 14
-        targetSdkVersion 26
-        versionCode 2
-        versionName "1.1"
+        minSdkVersion 26
+        targetSdkVersion 28
+        versionCode 3
+        versionName "1.0"
     }
     buildTypes {
         release {
@@ -21,5 +21,5 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'junit:junit:4.12'
-    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support:appcompat-v7:28.0.0'
 }
