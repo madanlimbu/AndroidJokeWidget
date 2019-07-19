@@ -27,9 +27,6 @@ We use [SemVer](https://semver.org/) for versioning. For the versions available,
 - Old-Version: https://play.google.com/store/apps/details?id=widgetgo.com.widgetgo
 
 ## Todo
-- Update with new contents
-- Add network interface to get content from web instead of file
-- Checks on network availability
 - Check on content last download time and difference in the contents
 
 ## Author
