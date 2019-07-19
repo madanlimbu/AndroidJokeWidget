@@ -2,7 +2,7 @@ package jokes.com.widget.theme;
 
 import android.util.Log;
 
-import jokes.com.widget.MainActivity;
+import jokes.com.widget.utils.Service;
 
 public class ThemeData {
     private String DEFAULT_BG = "#262425";
@@ -19,7 +19,7 @@ public class ThemeData {
     }
 
     public String getBgValue() {
-        Log.d(MainActivity.TAG, "Current BG value : " + bgValue);
+        Log.d(Service.TAG, "Current BG value : " + bgValue);
         return (bgValue.isEmpty()) ? DEFAULT_BG : bgValue;
     }
 
@@ -32,7 +32,7 @@ public class ThemeData {
     }
 
     public void setFgValue(String fgValue) {
-        Log.d(MainActivity.TAG, "Current FG value : " + fgValue);
+        Log.d(Service.TAG, "Current FG value : " + fgValue);
         this.fgValue = (fgValue.isEmpty()) ? DEFAULT_FG : fgValue;
     }
 }
