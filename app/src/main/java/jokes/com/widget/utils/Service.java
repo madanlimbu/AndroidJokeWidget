@@ -24,7 +24,7 @@ import jokes.com.widget.theme.ThemeData;
 
 public class Service {
     public static String JOKES_ASSETS = "jokes";
-    public static String JOKES_URL = "https://raw.githubusercontent.com/madan95/AndroidJokeWidget/master/app/src/main/assets/jokes";
+    public static String JOKES_URL = "https://raw.githubusercontent.com/madan95/AndroidJokeWidget/master/app/src/main/assets/text";
     public static String UPDATE_JOKE = "ACTION_UPDATE_WIDGET_JOKE";
     public static String UPDATE_THEME = "ACTION_UPDATE_WIDGET_THEME";
     public static String JOKES_FILENAME = "jokes";

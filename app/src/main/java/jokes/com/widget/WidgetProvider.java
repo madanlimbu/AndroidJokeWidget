@@ -8,6 +8,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.se.omapi.SEService;
 import android.util.Log;
 import android.widget.RemoteViews;
 
@@ -28,11 +29,16 @@ public class WidgetProvider extends AppWidgetProvider {
         ComponentName thisAppWidget = new ComponentName(context.getPackageName(), WidgetProvider.class.getName());
         int[] appWidgetIds = AppWidgetManager.getInstance(context).getAppWidgetIds(thisAppWidget);
 
+        Log.d(Service.TAG, "Intent is to : " + intent.getAction());
         if (intent.getAction().equals(Service.UPDATE_THEME)){
             updateTheme(context, AppWidgetManager.getInstance(context), appWidgetIds);
         }
+        else if (intent.getAction().equals(Service.UPDATE_JOKE)){
+            onUpdate(context, AppWidgetManager.getInstance(context), appWidgetIds);
+        }
         else {
             onUpdate(context, AppWidgetManager.getInstance(context), appWidgetIds);
+            Log.d(Service.TAG, "Some different intent.");
         }
     }
 
@@ -80,7 +86,7 @@ public class WidgetProvider extends AppWidgetProvider {
      */
    public void createIntentForWidgetClick(Context context, int[] appWidgetIds, RemoteViews views) {
        Intent intent = new Intent(context, WidgetProvider.class);
-       intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+       intent.setAction(Service.UPDATE_JOKE);
        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
        PendingIntent pendingIntent = PendingIntent.getBroadcast(
                context,
@@ -105,7 +111,8 @@ public class WidgetProvider extends AppWidgetProvider {
        if (jokes.isEmpty()) {
            jokes = Service.getJokesFromAssets(con);
        }
-
-       return jokes.get(new Random().nextInt(jokes.size() - 0) + 0);
+       String joke = jokes.get(new Random().nextInt(jokes.size() - 0) + 0);
+       Log.d(Service.TAG, joke);
+       return joke;
    }
 }
