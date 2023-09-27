@@ -27,6 +27,9 @@ We use [SemVer](https://semver.org/) for versioning. For the versions available,
 - Old-Version: https://play.google.com/store/apps/details?id=widgetgo.com.widgetgo
 
 ## Todo
+- Fix bug when widget is resized/moved the context of theme (colour) is lost
+- Re-introduce api call to get new data (Expertiment with spring boot api)
+- Update main app theme
 - Check on content last download time and difference in the contents
 
 ## Author

@@ -8,26 +8,26 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/bg-label"
+        android:id="@+id/bg_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Set widget background colour" />
 
     <EditText
-        android:id="@+id/bg-value"
+        android:id="@+id/bg_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="#262425"
         android:inputType="text" />
 
     <TextView
-        android:id="@+id/fg-label"
+        android:id="@+id/fg_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Set widget text colour" />
 
     <EditText
-        android:id="@+id/fg-value"
+        android:id="@+id/fg_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="#D79F90"
@@ -41,7 +41,7 @@
         />
 
     <TextView
-        android:id="@+id/error-label"
+        android:id="@+id/error_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/colorAccent"/>

@@ -2,12 +2,15 @@ package jokes.com.widget;
 
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import jokes.com.widget.database.DataStore;
 import jokes.com.widget.theme.ThemeData;
 import jokes.com.widget.utils.Service;
@@ -23,12 +26,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedIntanceState);
         setContentView(R.layout.main);
         bootstrap();
-        if (android.os.Build.VERSION.SDK_INT > 9)
-        {
-            StrictMode.ThreadPolicy policy = new
-                    StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-        }
+//        StrictMode.ThreadPolicy policy = new
+//                StrictMode.ThreadPolicy.Builder().permitAll().build();
+//        StrictMode.setThreadPolicy(policy);
     }
 
     /**
@@ -85,9 +85,13 @@ public class MainActivity extends AppCompatActivity {
         Log.d(Service.TAG, "Updating widgets by sending intent.");
         Intent updateIntent = new Intent(getBaseContext(), WidgetProvider.class);
         updateIntent.setAction(Service.UPDATE_THEME);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                getBaseContext(), 0, updateIntent, 0
-        );
+        PendingIntent pendingIntent;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            pendingIntent = PendingIntent.getBroadcast(getBaseContext(), 0, updateIntent, PendingIntent.FLAG_MUTABLE);
+        } else {
+            pendingIntent = PendingIntent.getBroadcast(getBaseContext(), 0, updateIntent, 0);
+        }
+
         try {
             pendingIntent.send();
         }

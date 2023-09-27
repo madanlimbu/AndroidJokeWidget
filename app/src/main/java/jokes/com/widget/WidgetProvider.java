@@ -8,6 +8,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.se.omapi.SEService;
 import android.util.Log;
 import android.widget.RemoteViews;
@@ -23,6 +24,7 @@ public class WidgetProvider extends AppWidgetProvider {
 
     Context con;
 
+    @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
         Log.d(Service.TAG, "On receive is fired.");
@@ -88,12 +90,12 @@ public class WidgetProvider extends AppWidgetProvider {
        Intent intent = new Intent(context, WidgetProvider.class);
        intent.setAction(Service.UPDATE_JOKE);
        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
-       PendingIntent pendingIntent = PendingIntent.getBroadcast(
-               context,
-               0,
-               intent,
-               PendingIntent.FLAG_UPDATE_CURRENT
-       );
+       PendingIntent pendingIntent;
+       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+           pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_MUTABLE);
+       } else {
+           pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+       }
        views.setOnClickPendingIntent(R.id.textView, pendingIntent);
    }
 
@@ -103,10 +105,10 @@ public class WidgetProvider extends AppWidgetProvider {
      * @return
      */
    public String getRandomJoke() {
-       ArrayList<String> jokes;
+       ArrayList<String> jokes = new ArrayList<>();
 
-       Service.makeRequest(con);
-       jokes = Service.getStringsFromFile(con);
+//       Service.makeRequest(con); // Todo: once app is sorted fix api call....
+//       jokes = Service.getStringsFromFile(con);
 
        if (jokes.isEmpty()) {
            jokes = Service.getJokesFromAssets(con);
