@@ -17,6 +17,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 
 import jokes.com.widget.database.DatabaseInterface;
@@ -24,7 +25,7 @@ import jokes.com.widget.theme.ThemeData;
 
 public class Service {
     public static String JOKES_ASSETS = "jokes";
-    public static String JOKES_URL = "https://raw.githubusercontent.com/madan95/AndroidJokeWidget/master/app/src/main/assets/jokes";
+    public static String JOKES_URL = "https://raw.githubusercontent.com/madanlimbu/AndroidJokeWidget/master/app/src/main/assets/jokes";
     public static String UPDATE_JOKE = "ACTION_UPDATE_WIDGET_JOKE";
     public static String UPDATE_THEME = "ACTION_UPDATE_WIDGET_THEME";
     public static String JOKES_FILENAME = "jokes";
@@ -84,18 +85,33 @@ public class Service {
      */
     public static void makeRequest(Context con) {
         Log.d(TAG, "makeRequest()");
+        Thread thread = new Thread(() -> {
+            try {
+                URL url = new URL(JOKES_URL);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
-        try {
-            URL url = new URL(JOKES_URL);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-
-            InputStream stream = new BufferedInputStream(connection.getInputStream());
-            saveFile(stream, con);
-            connection.disconnect();
-
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
+                try {
+                    InputStream inputStream = connection.getInputStream();
+                    InputStream stream = new BufferedInputStream(inputStream);
+                    Log.d(TAG, stream.toString());
+                    saveFile(stream, con);
+                } catch (IOException e) {
+                    Log.d(TAG, "Found issue with IOException");
+                    InputStream inputStream = new BufferedInputStream(connection.getErrorStream());
+                    StringBuilder sb = new StringBuilder();
+                    for (int ch; (ch = inputStream.read()) != -1; ) {
+                        sb.append((char) ch);
+                    }
+                    Log.d(TAG, sb.toString());
+                }
+                finally {
+                    connection.disconnect();
+                }
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        thread.start();
     }
 
 
