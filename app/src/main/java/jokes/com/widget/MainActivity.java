@@ -1,10 +1,6 @@
 package jokes.com.widget;
 
-import android.app.PendingIntent;
-import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -26,9 +22,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedIntanceState);
         setContentView(R.layout.main);
         bootstrap();
-//        StrictMode.ThreadPolicy policy = new
-//                StrictMode.ThreadPolicy.Builder().permitAll().build();
-//        StrictMode.setThreadPolicy(policy);
     }
 
     /**
@@ -57,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         if(Service.isValidColor(bgColor) && Service.isValidColor(fgColor)) {
             Log.d(Service.TAG, "Both color valid.");
             Service.saveThemeData(db, new ThemeData(bgColor, fgColor));
-            updateWidgets();
+            this.updateWidgets();
             this.errorLabel.setText("");
         }
         else {
@@ -78,25 +71,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Update the themeing of currently active widgets.
+     * Update the theming of currently active widgets.
      *
      */
     public void updateWidgets() {
         Log.d(Service.TAG, "Updating widgets by sending intent.");
-        Intent updateIntent = new Intent(getBaseContext(), WidgetProvider.class);
-        updateIntent.setAction(Service.UPDATE_THEME);
-        PendingIntent pendingIntent;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            pendingIntent = PendingIntent.getBroadcast(getBaseContext(), 0, updateIntent, PendingIntent.FLAG_MUTABLE);
-        } else {
-            pendingIntent = PendingIntent.getBroadcast(getBaseContext(), 0, updateIntent, 0);
-        }
-
-        try {
-            pendingIntent.send();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
+        WidgetProvider.sendUpdateWidgetIntent(getBaseContext());
     }
 }

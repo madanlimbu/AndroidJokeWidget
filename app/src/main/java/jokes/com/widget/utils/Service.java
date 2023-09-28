@@ -19,7 +19,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Random;
 
+import jokes.com.widget.MainActivity;
+import jokes.com.widget.WidgetProvider;
 import jokes.com.widget.database.DatabaseInterface;
 import jokes.com.widget.theme.ThemeData;
 
@@ -28,6 +31,7 @@ public class Service {
     public static String JOKES_URL = "https://raw.githubusercontent.com/madanlimbu/AndroidJokeWidget/master/app/src/main/assets/jokes";
     public static String UPDATE_JOKE = "ACTION_UPDATE_WIDGET_JOKE";
     public static String UPDATE_THEME = "ACTION_UPDATE_WIDGET_THEME";
+    public static String UPDATE_WIDGET = "JOKES_WIDGET_ACTION_UPDATE_WIDGET";
     public static String JOKES_FILENAME = "jokes";
     public static String TAG = "JOKES_WIDGET";
 
@@ -207,5 +211,25 @@ public class Service {
         }
 
         return  listOfJokes;
+    }
+
+    /**
+     * Get random joke from the list.
+     *
+     * @return
+     */
+    public static String getRandomJoke(Context context) {
+        Log.d(Service.TAG, "getRandomJoke");
+        ArrayList<String> jokes = new ArrayList<>();
+
+//       Service.makeRequest(con); // Todo: once app is sorted fix api call....
+//       jokes = Service.getStringsFromFile(con);
+
+        if (jokes.isEmpty()) {
+            jokes = Service.getJokesFromAssets(context);
+        }
+        String joke = jokes.get(new Random().nextInt(jokes.size() - 0) + 0);
+        Log.d(Service.TAG, joke);
+        return joke;
     }
 }
