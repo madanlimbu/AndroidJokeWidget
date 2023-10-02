@@ -3,3 +3,5 @@
 .DS_Store
 /local.properties
 /build
+app/debug/
+app/release/
