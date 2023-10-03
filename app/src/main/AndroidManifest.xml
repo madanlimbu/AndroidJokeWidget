@@ -15,6 +15,13 @@
         <receiver android:enabled="true" android:name=".WidgetProvider"
             android:exported="true">
             <intent-filter>
+                <action android:name="jokes.com.widget.ACTION_UPDATE_JOKE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="jokes.com.widget.ACTION_UPDATE_JOKE_UI" />
+            </intent-filter>
+
+            <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
             <intent-filter>
@@ -22,9 +29,6 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_ENABLED" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.appwidget.action.JOKES_WIDGET_ACTION_UPDATE_WIDGET" />
             </intent-filter>
             <meta-data android:name="android.appwidget.provider"
                 android:resource="@xml/simple_widget_info" />

@@ -24,9 +24,19 @@ public class WidgetProvider extends AppWidgetProvider {
         Log.d(Service.TAG, "Intent is to : " + intent.getAction());
         super.onReceive(context, intent);
 
-        ComponentName thisAppWidget = new ComponentName(context.getPackageName(), WidgetProvider.class.getName());
-        int[] appWidgetIds = AppWidgetManager.getInstance(context).getAppWidgetIds(thisAppWidget);
-        this.updateWidget(context, AppWidgetManager.getInstance(context), appWidgetIds);
+        if (intent.getAction().equals(Service.UPDATE_JOKE_UI) && intent.hasExtra("joke")) {
+            Log.d(Service.TAG, "Intent: " + intent.getAction());
+            Log.d(Service.TAG, "intent.hasExtra(\"joke\"): " + intent.hasExtra("joke"));
+            Log.d(Service.TAG, "Extra is : " + intent.getStringExtra("joke"));
+
+            // once we have new data update the ui.
+            ComponentName thisAppWidget = new ComponentName(context.getPackageName(), WidgetProvider.class.getName());
+            int[] appWidgetIds = AppWidgetManager.getInstance(context).getAppWidgetIds(thisAppWidget);
+            this.updateWidget(context, intent, AppWidgetManager.getInstance(context), appWidgetIds);
+        } else {
+            // Use new thread to get new data from remote db or local disk.
+            Service.broadcastNewJoke(context);
+        }
     }
 
     public static PendingIntent getUpdateJokesWidgetPendingIntent(Context context) {
@@ -72,10 +82,11 @@ public class WidgetProvider extends AppWidgetProvider {
      * Single place to Update the widget (data, theme) & add on click listener.
      *
      * @param context
+     * @param intent
      * @param appWidgetManager
      * @param appWidgetIds
      */
-    public void updateWidget(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+    public void updateWidget(Context context, Intent intent, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         Log.d(Service.TAG, "updateWidget");
         ThemeData theme = Service.getThemeData(new DataStore(context));
         final int N = appWidgetIds.length;
@@ -83,7 +94,9 @@ public class WidgetProvider extends AppWidgetProvider {
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget);
             views.setInt(R.id.textView, "setBackgroundColor", Color.parseColor(theme.getBgValue()));
             views.setTextColor(R.id.textView, Color.parseColor(theme.getFgValue()));
-            views.setTextViewText(R.id.textView, Service.getRandomJoke(context));
+            Log.d(Service.TAG, intent.getStringExtra("joke"));
+            views.setTextViewText(R.id.textView, intent.getStringExtra("joke"));
+            // views.setTextViewText(R.id.textView, Service.getRandomJoke(context));
             this.createIntentForWidgetClick(context, views);
             appWidgetManager.updateAppWidget(appWidgetIds[i], views);
         }
